@@ -1,6 +1,25 @@
 const apiUrl = "https://playground.4geeks.com/todo";
 const user = "MiguelC";
 
+export const getUser = async (user) => {
+  try {
+    const response = await fetch(`${apiUrl}/users/${user}`);
+    
+    if (response.ok) {
+      // El usuario existe, devolvemos sus datos
+      return await response.json();
+    } else if (response.status === 404) {
+      // El usuario NO existe, lo creamos
+      console.log("Usuario no encontrado, creando usuario");
+      return await createUser(username);
+    } else {
+      throw new Error(`Error inesperado: ${response.status}`);
+    }
+  } catch (error) {
+    console.error("Error al obtener/validar usuario:", error);
+  }
+};
+
 export const createUser = async () => {
   try {
     const response = await fetch(`${apiUrl}/users/MiguelC`, {
