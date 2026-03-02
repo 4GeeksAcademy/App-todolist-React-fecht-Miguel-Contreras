@@ -1,26 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PossIt from "./PossIt";
-import { createUser } from "../../api/api";
-import { useEffect, useState } from "react";
-//include images into your bundle
+import { getTareas } from "../../api/api"; // Importamos getTareas
 
-//create your first component
 const Home = () => {
-  const [user, setUser] = useState();
+  const [tareas, setTareas] = useState([]);
 
-  useEffect(() => {
-    createUser()
-      .then((user) => setUser(user))
-
-      .catch((error) => {
-        console.log(error);
-      });
+    useEffect(() => {
+    const cargarTodo = async () => {
+      const lista = await getTareas();
+      setTareas(lista);
+    };
+    cargarTodo();
   }, []);
 
   return (
     <div>
-      <h1>Lista de tareas</h1>
-      <PossIt />
+      <h1 className="text-center mt-5">Lista de tareas</h1>
+      {/* Pasamos las tareas a PossIt para que las pinte */}
+      <PossIt tareas={tareas} setTareas={setTareas} />
     </div>
   );
 };
